@@ -1,0 +1,26 @@
+
+import json
+from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
+
+app = FastAPI()
+LOG_FILE = "security/audit.log"
+
+def read_logs():
+    if not Path(LOG_FILE).exists():
+        return []
+    with open(LOG_FILE) as f:
+        return [json.loads(line) for line in f.readlines()[-200:]]
+
+@app.get("/")
+def index():
+    with open(Path(__file__).parent / "templates/index.html") as f:
+        return HTMLResponse(f.read())
+
+@app.get("/api/logs")
+def logs():
+    return read_logs()
+
+app.mount("/static", StaticFiles(directory=Path(__file__).parent / "static"), name="static")

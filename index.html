@@ -1,0 +1,17 @@
+
+class SecurityMiddleware:
+    def __init__(self, security_agent):
+        self.security = security_agent
+
+    def wrap_agent(self, agent_name, agent_callable):
+        def wrapped(input_data):
+            self.security.validate_input(agent_name, input_data)
+            output = agent_callable(input_data)
+            return self.security.sanitize_output(agent_name, output)
+        return wrapped
+
+    def wrap_tool(self, agent_name, tool_name, tool_callable):
+        def wrapped(*args, **kwargs):
+            self.security.validate_tool_call(agent_name, tool_name)
+            return tool_callable(*args, **kwargs)
+        return wrapped

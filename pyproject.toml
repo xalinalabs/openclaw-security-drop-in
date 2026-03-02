@@ -1,0 +1,12 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>OpenClaw Security Dashboard</title>
+</head>
+<body>
+<h1>OpenClaw Security Dashboard</h1>
+<div id="logs"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>
